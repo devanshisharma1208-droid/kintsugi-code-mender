@@ -75,7 +75,7 @@ The browser uses vanilla HTML, CSS, and JavaScript. The server dependencies are 
 2. In the Vercel project settings, add `GEMINI_API_KEY` to the environments you plan to deploy, such as Preview and Production. Set `GEMINI_MODEL` only if you want to override the default. `PORT` is only needed to override the local listener port.
 3. Deploy, then open the deployment URL. Confirm that the workbench loads and run one sample through **Mend Cracks** to check the API and environment setup.
 
-`vercel.json` declares the configuration schema and uses Vercel’s default Express routing. Vercel detects the app exported by `server.js` and serves the static files under `public/`. [Express on Vercel](https://vercel.com/docs/frameworks/backend/express)
+`vercel.json` selects the Express framework and maps `/` to the deployed `public/index.html` asset. Vercel serves the CSS and JavaScript from `public/` and forwards dynamic requests such as `POST /api/mend` to the app exported by `server.js`. In the dashboard, use the directory containing `package.json` as the Root Directory and leave the Build Command and Output Directory at their framework defaults. [Express on Vercel](https://vercel.com/docs/frameworks/backend/express)
 
 ## Presentation evaluation
 

@@ -28,6 +28,9 @@ Choose a cracked sample or paste your own code into the line-numbered editor. Op
 ├── LICENSE             # MIT license
 ├── README.md           # Project guide
 ├── package.json        # Dependencies and npm start command
+├── package-lock.json   # Exact dependency versions resolved by npm
+├── docs/
+│   └── evaluation_results.md  # Live comparison worksheet
 ├── server.js           # CommonJS Express app and POST /api/mend
 ├── vercel.json         # Config schema; native Express routing applies
 └── public/
@@ -74,7 +77,11 @@ The browser uses vanilla HTML, CSS, and JavaScript. The server dependencies are 
 
 `vercel.json` declares the configuration schema and uses Vercel’s default Express routing. Vercel detects the app exported by `server.js` and serves the static files under `public/`. [Express on Vercel](https://vercel.com/docs/frameworks/backend/express)
 
-## README fact-check audit
+## Presentation evaluation
+
+Use the [live evaluation log](docs/evaluation_results.md) to compare “Fix this code” with Kintsugi on the same three samples.
+
+## README Fact-Check Audit Table
 
 | Claim | Actual Repository | Status |
 | --- | --- | --- |

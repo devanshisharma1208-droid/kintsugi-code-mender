@@ -7,7 +7,7 @@ const { GoogleGenAI } = require('@google/genai');
 dotenv.config({ path: path.join(__dirname, '.env'), quiet: true });
 
 const apiKey = process.env.GEMINI_API_KEY?.trim();
-const model = process.env.GEMINI_MODEL?.trim() || 'gemini-2.5-flash';
+const model = process.env.GEMINI_MODEL?.trim() || 'gemini-3.1-flash-lite';
 const port = Number(process.env.PORT || 3000);
 const app = express();
 
@@ -123,6 +123,11 @@ app.post('/api/mend', express.json({ limit: '64kb' }), async (req, res) => {
       },
     });
   } catch (error) {
+    // Provider messages may contain request details. Log only the status for diagnosis.
+    console.error('Gemini generateContent failed', { status: Number(error?.status) || 'transport' });
+    if (error?.status === 404) {
+      return res.status(502).json({ error: 'Gemini could not find the configured model for this project. Check GEMINI_MODEL in Vercel and redeploy.' });
+    }
     if (error?.status === 429) {
       return res.status(429).json({ error: 'Kintsu’s kiln is at its Gemini usage limit. Wait a little or check your Gemini quota before trying again.' });
     }
@@ -131,7 +136,10 @@ app.post('/api/mend', express.json({ limit: '64kb' }), async (req, res) => {
       || (error?.status === 400 && /API_KEY_INVALID|API key not valid/i.test(error.message))) {
       return res.status(500).json({ error: 'Gemini refused the server’s credentials. Check that GEMINI_API_KEY is valid and has access to the configured model.' });
     }
-    return res.status(500).json({ error: 'Kintsu could not get a response from Gemini. Please try again in a moment.' });
+    if (error?.status === 400) {
+      return res.status(502).json({ error: 'Gemini rejected the generation request. Check that the selected model supports structured JSON output and is available for this project.' });
+    }
+    return res.status(503).json({ error: 'Gemini is temporarily unreachable or unavailable. Please try again shortly.' });
   }
 
   try {

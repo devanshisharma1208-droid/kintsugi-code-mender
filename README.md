@@ -53,13 +53,13 @@ The browser uses vanilla HTML, CSS, and JavaScript. The server dependencies are 
 
    ```dotenv
    GEMINI_API_KEY=replace_with_your_gemini_api_key
-   GEMINI_MODEL=gemini-2.5-flash
+   GEMINI_MODEL=gemini-3.1-flash-lite
    PORT=3000
    ```
 
    Keep `.env` local. Never paste the key into the editor or put it in `public/`.
 
-   If your Gemini project cannot access `gemini-2.5-flash`, set `GEMINI_MODEL` to a model available to that project that supports structured output. [Gemini model documentation](https://ai.google.dev/gemini-api/docs/models)
+   If your Gemini project cannot access the default model, set `GEMINI_MODEL` to a model available to that project that supports structured output. [Gemini model documentation](https://ai.google.dev/gemini-api/docs/models)
 
 3. Start the app.
 
